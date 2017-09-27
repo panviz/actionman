@@ -1,0 +1,69 @@
+{
+  "name": "Graphiy.actionman",
+  "version": "0.0.1",
+  "description": "Actions mananger",
+  "keywords": [
+    "command pattern",
+    "actions manager"
+  ],
+  "homepage": "",
+  "license": "MIT",
+  "main": "build/bundle.js",
+  "module": "index",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Graphiy/actionman"
+  },
+  "scripts": {
+    "build": "webpack",
+    "lint": "eslint . --ignore-path .gitignore",
+    "start": "webpack-dev-server --port 8005",
+    "test": "mocha test --compilers js:babel-core/register"
+  },
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "browsers": [
+              "last 2 versions"
+            ]
+          }
+        }
+      ]
+    ]
+  },
+  "dependencies": {
+    "eventemitter3": "^2.0.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.6.0",
+    "css-loader": "^0.28.4",
+    "eslint": "^4.6.0",
+    "eslint-config-graphiy": "Graphiy/javascript",
+    "extract-text-webpack-plugin": "2.1.2",
+    "mocha": "^3.5.0",
+    "node-sass": "^4.5.3",
+    "raw-loader": "^0.5.1",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.4.1",
+    "webpack-dev-server": "^2.7.1"
+  },
+  "peerDependencies": {
+    "lodash": "4.x"
+  },
+  "eslintConfig": {
+    "extends": "graphiy",
+    "env": {
+      "browser": true,
+      "mocha": true
+    },
+    "globals": {
+      "_": true,
+      "$": true
+    }
+  }
+}
