@@ -1,6 +1,6 @@
 {
   "name": "@graphiy/actionman",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Actions mananger",
   "keywords": [
     "actions manager",
@@ -51,19 +51,26 @@
   },
   "devDependencies": {
     "@graphiy/eslint-config": "graphiy/eslint-config",
+    "@material/animation": "^0.4.1",
+    "@material/button": "^0.23.0",
+    "@material/select": "^0.23.0",
+    "@material/switch": "^0.1.15",
     "babel-cli": "^6.24.1",
     "babel-preset-env": "^1.6.0",
     "css-loader": "^0.28.4",
     "eslint": "^4.6.0",
     "extract-text-webpack-plugin": "2.1.2",
     "jest": "^21.2.1",
+    "jquery": "^3.2.1",
+    "mdi": "^2.0.46",
     "mocha": "^3.5.0",
     "node-sass": "^4.5.3",
     "pre-commit": "^1.2.2",
     "raw-loader": "^0.5.1",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
-    "webpack": "^3.4.1",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.8.1",
     "webpack-dev-server": "^2.7.1"
   },
   "peerDependencies": {
@@ -71,7 +78,11 @@
   },
   "jest": {
     "testMatch": [
-      "**/test/**/*.js"
+      "**/test/**/!(*.setup).js"
+    ],
+    "setupFiles": [
+      "./test/global.setup.js"
     ]
-  }
+  },
+  "precommit": "test"
 }

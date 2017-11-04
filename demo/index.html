@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphiy Actionman</title>
+    <link rel="stylesheet" type="text/css" href="/demo.css">
+  </head>
+  <body>
+    <div class="action-panel">
+      <h2>Actions panel</h2>
+
+      <div class='r-table'>
+        <div class="r-table-cell menu-item" data-action="Ripple">
+          <div>Simple action (fired for all who listens)</div>
+          <div class="reversibility">irreversible</div>
+          <input class="toggle-enabled" type="checkbox" checked/>
+          <button class="mdc-button action-trigger">Ripple</button>
+        </div>
+        <div class="r-table-cell menu-item" data-action="Buzz" data-ids="second third">
+          <div>Action for limited users (second and third only)</div>
+          <div class="reversibility">irreversible</div>
+          <input class="toggle-enabled" type="checkbox" checked/>
+          <button class="mdc-button action-trigger">Buzz</button>
+        </div>
+        <div class="r-table-cell menu-item" data-action="ToggleRaise">
+          <div>Toggle action</div>
+          <div class="reversibility">undoable by nature</div>
+          <input class="toggle-enabled" type="checkbox" checked/>
+          <div class="mdc-switch action-trigger">
+            <!-- <label for="raise-switch" class="mdc-switch-label">Raise</label> -->
+            <input type="checkbox" id="raise-switch" class="mdc-switch__native-control" />
+            <div class="mdc-switch__background">
+              <div class="mdc-switch__knob"></div>
+            </div>
+          </div>
+        </div>
+        <div class="r-table-cell menu-item" data-action="SetColor">
+          <div>Action with parameter</div>
+          <div class="reversibility">undoable</div>
+          <input class="toggle-enabled" type="checkbox" checked/>
+          <div class="mdc-select action-trigger" role="listbox" tabindex="0">
+            <span class="mdc-select__selected-text">Set color</span>
+            <div class="mdc-simple-menu mdc-select__menu">
+              <ul class="mdc-list mdc-simple-menu__items">
+                <li class="mdc-list-item" role="option" id="lightcoral">Light Coral</li>
+                <li class="mdc-list-item" role="option" id="palegreen">Pale Green</li>
+                <li class="mdc-list-item" role="option" id="LightSkyBlue">Sky Blue</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h2>Components can fire actions too</h2>
+    <div class="components"></div>
+
+    <script type="text/javascript" src="/node_modules/lodash/lodash.js"></script>
+    <script type="text/javascript" src="/node_modules/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="/demo.js"></script>
+  </body>
+</html>

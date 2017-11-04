@@ -5,73 +5,90 @@
  */
 import EventEmitter from 'eventemitter3'
 
+/* eslint class-methods-use-this: ['error', { 'exceptMethods': ['undo', 'redo'] }] */
 export default class Action extends EventEmitter {
-  constructor (p = {}) {
+  constructor (id, p = {}) {
     super()
-    this.registrar = p.registrar
-    this._id = p.id
-    this._label = p.label
-    this._icon = p.icon || 'fa fa-check-square-o'
-    this._deny = true
+    this._id = id || this.constructor.id
+    this._registrars = {}
+    this.register(p.registrar, p.registrarId)
+  }
+  /**
+   * @return String constructor name if this class is extended or provided id otherwise
+   */
+  get id () {
+    return this._id ? this._id : this.constructor.name
+  }
+  /**
+   * @returns Boolean whether Action has overriden undo method
+   */
+  get canUndo () {
+    return this.undo !== Action.prototype.undo
+  }
+
+  get isEnabled () {
+    return !this._deny
+  }
+  /**
+   * Subscribe registrar for this action
+   * Anonymous registrars are allowed
+   */
+  register (registrar, id = _.keys(this._registrars).length) {
+    if (registrar) this._registrars[id] = registrar
+    return registrar
+  }
+  /**
+   * Unsubscribe registrar from this action
+   * Clear all listeners if there are no registrars left
+   * @param registrar
+   */
+  deregister (idOrRegistrar) {
+    let id // eslint-disable-line no-unused-vars
+    let registrar
+    if (_.isString(idOrRegistrar)) id = idOrRegistrar
+    else registrar = idOrRegistrar
+
+    if (id) delete this._registrars[id]
+    if (registrar) delete this._registrars[_.findKey(this._registrars, registrar)]
+    if (_.isEmpty(this._registrars)) this.off()
   }
   /**
    * Execute the action code
    */
-  apply (...args) {
-    if (this._deny) return undefined
+  apply (ids, ...args) {
+    if (this._deny) return
+    if (ids === 'all') ids = _.keys(this._registrars)
+    ids = _.castArray(ids)
 
-    if (this._execute) {
-      return this._execute(...args)
+    if (this._execute && !_.isEmpty(this._registrars)) {
+      const results = _.map(ids, (id) => {
+        this._registrar = this._registrars[id]
+        if (!this._registrar) return
+        const result = this._execute(...args)
+        this._registrar = undefined
+        return result
+      })
+      this.emit('fire', ...args)
+      return results
     }
-    return undefined
   }
   /**
-   * Override in Concrete Command
+   * A simple action just calls a method of the same name as its id on registrar
+   * Override in concrete action
    */
-  _execute () { // eslint-disable-line
+  _execute (...args) {
+    const method = this.id.charAt(0).toLowerCase() + this.id.slice(1)
+    if (_.isFunction(this._registrar[method])) {
+      return this._registrar[method].call(this._registrar, ...args)
+    }
   }
   /**
-   * Evaluate enabled state on selection change
-   * @param selection Array
+   * A simple action just toggles enabled state by provided flag
+   * Override in concrete action
+   * @param {Boolean} enable
    */
-  evaluate (selection) { // eslint-disable-line
-  }
-  /**
-   * Toggle enabled state
-   */
-  _evaluate (enable) {
-    enable ? this.enable() : this.disable() // eslint-disable-line
-  }
-  /**
-   * Id getter prevents id from change
-   */
-  get id () {
-    return this._id
-  }
-  /**
-   * Change icon
-   * @param String cssClass
-   */
-  set icon (cssClass) {
-    this._icon = cssClass
-  }
-  get icon () {
-    return this._icon
-  }
-  /**
-   * Refresh the action label
-   * @param newLabel String the new label
-   */
-  set label (newLabel) {
-    this._label = newLabel
-  }
-
-  get label () {
-    return this._label
-  }
-
-  get type () {
-    return this._type
+  evaluate (enable) { // eslint-disable-line
+    enable ? this.enable() : this.disable()
   }
   /**
    * Changes enable/disable state
@@ -80,7 +97,7 @@ export default class Action extends EventEmitter {
   disable () {
     if (this._deny) return
     this._deny = true
-    this.emit('disable')
+    this.emit('state:change', !this._deny)
   }
   /**
    * Changes enable/disable state
@@ -89,16 +106,14 @@ export default class Action extends EventEmitter {
   enable () {
     if (!this._deny) return
     this._deny = false
-    this.emit('enable')
+    this.emit('state:change', !this._deny)
   }
   /**
-   * @returns Boolean whether Action has undo method
+   * @abstract
    */
-  canUndo () {
-    return !!this._undo
-  }
-
-  isEnabled () {
-    return !this._deny
-  }
+  undo () {}
+  /**
+   * @abstract
+   */
+  redo () {}
 }
