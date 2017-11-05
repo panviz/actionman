@@ -1,4 +1,5 @@
 import { MDCSelect } from '@material/select'
+import { MDCRipple } from '@material/ripple'
 
 import Actionman from '../src/actionman'
 import Square from './component/square'
@@ -13,6 +14,7 @@ class App {
     this.select = new MDCSelect(this.container.find('.mdc-select')[0])
     this.switch = this.container.find('.mdc-switch > input')
     this.buttons = this.container.find('.action-panel .mdc-button')
+    _.each(this.buttons, button => MDCRipple.attachTo(button))
 
     const options = {
       actionman: this.actionman,

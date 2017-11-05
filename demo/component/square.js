@@ -1,8 +1,9 @@
 import Component from './component'
+import Rotate from '../action/rotate'
 
 export default class Square extends Component {
   static get actions () {
-    return ['Ripple', 'Buzz', 'SetColor', 'ToggleRaise']
+    return ['Ripple', 'Buzz', 'SetColor', 'ToggleRaise', Rotate]
   }
 
   constructor (...args) {
