@@ -1,7 +1,7 @@
-import Component from './component'
-import Rotate from '../action/rotate'
+import Shape from './shape'
+import Rotate from '../../action/rotate'
 
-export default class Square extends Component {
+export default class Square extends Shape {
   static get actions () {
     return ['Ripple', 'Buzz', 'SetColor', 'ToggleRaise', Rotate]
   }

@@ -13,6 +13,9 @@ const rules = [{
     use: ['css-loader', 'sass-loader'],
   }),
 }, {
+  test: /\.html/,
+  loader: 'handlebars-loader',
+}, {
   test: /\.csv/,
   loader: 'raw-loader',
 }, {

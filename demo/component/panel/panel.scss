@@ -4,10 +4,11 @@
 @import '~@material/menu/dist/mdc.menu';
 @import '~@material/select/dist/mdc.select';
 @import '~@material/switch/dist/mdc.switch';
-@import './r-table';
+@import '../../r-table';
 
 .action-panel {
   max-width: 904px;
+  text-align: center;
 
   h2 {
     text-align: center;
@@ -39,6 +40,8 @@
   display: flex;
   flex-direction: column;
   width: 180px;
+  text-align: inherit;
+
   .reversibility {
     background: lightblue;
   }
