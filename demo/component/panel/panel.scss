@@ -6,16 +6,21 @@
 @import '~@material/switch/dist/mdc.switch';
 @import '../../r-table';
 
-.action-panel {
+.Panel {
+  position: relative;
   max-width: 904px;
   text-align: center;
+  border: 2px solid lightgrey;
+  margin: 16px 8px;
 
   h2 {
+    position: absolute;
+    top: -36px;
+    left: 10%;
+    padding: 0 8px;
     text-align: center;
+    background: white;
   }
-
-  border: 1px solid lightgrey;
-  margin: 8px;
 
   ul {
     display: inline-block;
@@ -65,7 +70,16 @@
     }
   }
 
-  .action-trigger {
-    margin: auto;
+  .action-trigger, .switch-wrapper, i {
+    margin: auto auto 0 auto;
+  }
+
+  .switch-wrapper {
+    padding: 8px 0;
+  }
+
+  i {
+    font-size: 24px;
+    color: dimgrey;
   }
 }

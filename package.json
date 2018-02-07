@@ -64,7 +64,7 @@
     "extract-text-webpack-plugin": "2.1.2",
     "jest": "^21.2.1",
     "jquery": "^3.2.1",
-    "mdi": "^2.0.46",
+    "mdi": "^2.1.19",
     "mocha": "^3.5.0",
     "node-sass": "^4.5.3",
     "pre-commit": "^1.2.2",

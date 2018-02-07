@@ -2,6 +2,19 @@
 @import './animation';
 
 .shapes {
+  position: relative;
+  margin: 16px 8px;
+  border: 2px solid lightgrey;
+
+  h2 {
+    position: absolute;
+    top: -36px;
+    left: 10%;
+    padding: 0 8px;
+    text-align: center;
+    background: white;
+  }
+
   & > div {
     display: inline-flex;
     width: 180px;

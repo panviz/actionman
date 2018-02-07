@@ -12,7 +12,7 @@ export default class Panel extends Component {
 
     this.select = new MDCSelect(this.$el.find('.mdc-select')[0])
     this.switch = this.$el.find('.mdc-switch > input')
-    this.buttons = this.$el.find('.action-panel .mdc-button')
+    this.buttons = this.$el.find('.mdc-button')
     _.each(this.buttons, button => MDCRipple.attachTo(button))
 
     this.buttons.on('click', (e) => {

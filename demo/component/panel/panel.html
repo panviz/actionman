@@ -1,64 +1,70 @@
-<div class="action-panel">
-  <h2>Actions panel</h2>
-  <ul class="undo-redo">
-    <li>
-      <button class="mdc-button mdc-button--raised disabled">
-        <i class="mdc-button__icon mdi mdi-undo"></i>
-        Undo
-      </button>
-    </li>
-    <li>
-      <button class="mdc-button mdc-button--raised">
-        <i class="mdc-button__icon mdi mdi-redo"></i>
-        Redo
-      </button>
-    </li>
-  </ul>
+<h2>Actions panel component</h2>
+<ul class="undo-redo">
+  <li>
+    <button class="mdc-button mdc-button--raised disabled">
+      <i class="mdc-button__icon mdi mdi-undo"></i>
+      Undo
+    </button>
+  </li>
+  <li>
+    <button class="mdc-button mdc-button--raised">
+      <i class="mdc-button__icon mdi mdi-redo"></i>
+      Redo
+    </button>
+  </li>
+</ul>
 
-  <div class='r-table'>
-    <div class="r-table-cell menu-item" data-action="Ripple">
-      <div>Simple action (fired for all who listens)</div>
-      <div class="reversibility">irreversible</div>
-      <input class="toggle-enabled" type="checkbox" checked/>
-      <button class="mdc-button action-trigger">Ripple</button>
-    </div>
-    <div class="r-table-cell menu-item" data-action="Buzz" data-ids="second third">
-      <div>Action for limited users (second and third only)</div>
-      <div class="reversibility">irreversible</div>
-      <input class="toggle-enabled" type="checkbox" checked/>
-      <button class="mdc-button action-trigger">Buzz</button>
-    </div>
-    <div class="r-table-cell menu-item" data-action="ToggleRaise">
-      <div>Toggle action</div>
-      <div class="reversibility">undoable by nature</div>
-      <input class="toggle-enabled" type="checkbox" checked/>
+<div class='r-table'>
+  <div class="r-table-cell menu-item" data-action="Ripple">
+    <div>Simple action (fired for all who listens)</div>
+    <div class="reversibility">irreversible</div>
+    <input class="toggle-enabled" type="checkbox" checked/>
+    <i class="mdi mdi-radio-tower"></i>
+    <button class="mdc-button action-trigger">Ripple</button>
+  </div>
+  <div class="r-table-cell menu-item" data-action="Buzz" data-ids="second third">
+    <div>For limited users (2nd and 3d shapes only)</div>
+    <div class="reversibility">irreversible</div>
+    <input class="toggle-enabled" type="checkbox" checked/>
+    <i class="mdi mdi-vibrate"></i>
+    <button class="mdc-button action-trigger">Buzz</button>
+  </div>
+  <div class="r-table-cell menu-item" data-action="ToggleRaise">
+    <div>Toggle action</div>
+    <div class="reversibility">undoable by design</div>
+    <input class="toggle-enabled" type="checkbox" checked/>
+    <i class="mdi mdi-arrange-bring-forward"></i>
+    <div class="switch-wrapper">
       <div class="mdc-switch action-trigger">
         <input type="checkbox" id="raise-switch" class="mdc-switch__native-control" />
         <div class="mdc-switch__background">
           <div class="mdc-switch__knob"></div>
         </div>
       </div>
+      <label for="raise-switch" class="mdc-switch-label">Raise</label>
     </div>
-    <div class="r-table-cell menu-item" data-action="SetColor">
-      <div>Action with parameter</div>
-      <div class="reversibility">undoable</div>
-shapes<input class="toggle-enabled" type="checkbox" checked/>
-      <div class="mdc-select action-trigger" role="listbox" tabindex="0">
-        <span class="mdc-select__selected-text">Set color</span>
-        <div class="mdc-simple-menu mdc-select__menu">
-          <ul class="mdc-list mdc-simple-menu__items">
-            <li class="mdc-list-item" role="option" id="lightcoral">Light Coral</li>
-            <li class="mdc-list-item" role="option" id="palegreen">Pale Green</li>
-            <li class="mdc-list-item" role="option" id="LightSkyBlue">Sky Blue</li>
-          </ul>
-        </div>
+  </div>
+  <div class="r-table-cell menu-item" data-action="SetColor">
+    <div>Action with parameter</div>
+    <div class="reversibility">undoable</div>
+    <input class="toggle-enabled" type="checkbox" checked/>
+    <i class="mdi mdi-palette"></i>
+    <div class="mdc-select action-trigger" role="listbox" tabindex="0">
+      <span class="mdc-select__selected-text">Set color</span>
+      <div class="mdc-simple-menu mdc-select__menu">
+        <ul class="mdc-list mdc-simple-menu__items">
+          <li class="mdc-list-item" role="option" id="lightcoral">Light Coral</li>
+          <li class="mdc-list-item" role="option" id="palegreen">Pale Green</li>
+          <li class="mdc-list-item" role="option" id="LightSkyBlue">Sky Blue</li>
+        </ul>
       </div>
     </div>
-    <div class="r-table-cell menu-item" data-action="Rotate">
-      <div>Custom action</div>
-      <div class="reversibility">undo method is defined in it's class</div>
-      <input class="toggle-enabled" type="checkbox" checked/>
-      <button class="mdc-button action-trigger">Rotate</button>
-    </div>
+  </div>
+  <div class="r-table-cell menu-item" data-action="Rotate">
+    <div>Custom action</div>
+    <div class="reversibility">undo method is defined in it's class</div>
+    <input class="toggle-enabled" type="checkbox" checked/>
+    <i class="mdi mdi-autorenew"></i>
+    <button class="mdc-button action-trigger">Rotate</button>
   </div>
 </div>

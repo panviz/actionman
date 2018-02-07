@@ -10,17 +10,11 @@ class App {
     this.container = $('body')
     this.actionman = new Actionman()
 
-    let options = {
-      actionman: this.actionman,
-      container: this.container,
-    }
-    this.log = new Log(options)
-
-    options = {
+    const options = {
       actionman: this.actionman,
       container: $('.shapes'),
     }
-    this.components = [
+    this.shapes = [
 
       // while first component of type Square is created,
       // it registers Actions for the first time,
@@ -33,8 +27,11 @@ class App {
       new Oval(_.extend({ id: 'third' }, options)),
     ]
 
+    options.container = this.container
+    this.log = new Log(options)
+
     // Actions panel is created last, so that it can subscribe to all previously registered actions
-    this.panel = new Panel({ actionman: this.actionman, container: this.container })
+    this.panel = new Panel(options)
   }
 }
 new App() // eslint-disable-line

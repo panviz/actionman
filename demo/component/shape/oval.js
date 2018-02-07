@@ -4,7 +4,7 @@ import Rotate from '../../action/rotate'
 export default class Oval extends Shape {
   // this component doesn't listen to Ripple action
   static get actions () {
-    return ['Buzz', 'SetColor', 'ToggleRaise', Rotate]
+    return ['Buzz', 'ToggleRaise', 'SetColor', Rotate]
   }
 
   constructor (...args) {
