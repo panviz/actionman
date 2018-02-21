@@ -26,4 +26,8 @@ export default class ToggleAction extends Action {
 
     if (method) this._registrar[method].call(this._registrar, this._toggleState, ...args)
   }
+
+  undo () {}
+
+  redo () {}
 }

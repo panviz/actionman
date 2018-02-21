@@ -1,9 +1,10 @@
 import Shape from './shape'
 import Rotate from '../../action/rotate'
+import SetColor from '../../../src/actions/setColor'
 
 export default class Square extends Shape {
   static get actions () {
-    return ['Ripple', 'Buzz', 'ToggleRaise', 'SetColor', Rotate]
+    return ['Ripple', 'Buzz', 'ToggleRaise', SetColor, Rotate]
   }
 
   constructor (...args) {

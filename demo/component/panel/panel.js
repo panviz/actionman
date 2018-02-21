@@ -17,6 +17,10 @@ export default class Panel extends Component {
 
     this.buttons.on('click', (e) => {
       const data = e.target.parentElement.dataset
+      if (data.action === 'undo' || data.action === 'redo') {
+        this.actionman[data.action]()
+        return
+      }
       const ids = data.ids ? data.ids.split(' ') : 'all'
       this.actionman.fire(data.action, ids)
     })
@@ -29,7 +33,7 @@ export default class Panel extends Component {
       // this action may be fired with or without flag
       this.actionman.fire('ToggleRaise', 'all')
     })
-    ;['Ripple', 'Buzz', 'Rotate'].forEach((actionName) => {
+    /* ;['Ripple', 'Buzz', 'Rotate'].forEach((actionName) => {
       this.actionman.get(actionName).on('state:change', (state) => {
         this.$el.find(`[data-action="${actionName}"] > button`).attr('disabled', !state)
       })
@@ -39,9 +43,14 @@ export default class Panel extends Component {
     })
     this.actionman.get('ToggleRaise').on('state:change', (state) => {
       this.switch.attr('disabled', !state)
-    })
+    }) */
     $('.menu-item .toggle-enabled').on('change', (e) => {
       this.actionman.get(e.target.parentElement.dataset.action).evaluate(e.target.checked)
+    })
+
+    this.actionman.on('change:history', () => {
+      this.$el.find('.undo').attr('disabled', !this.actionman.canUndo())
+      this.$el.find('.redo').attr('disabled', !this.actionman.canRedo())
     })
   }
 }

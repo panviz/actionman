@@ -7,11 +7,10 @@ import EventEmitter from 'eventemitter3'
 
 /* eslint class-methods-use-this: ['error', { 'exceptMethods': ['undo', 'redo'] }] */
 export default class Action extends EventEmitter {
-  constructor (id, p = {}) {
+  constructor (id) {
     super()
     this._id = id || this.constructor.id
-    this._registrars = {}
-    this.register(p.registrar, p.registrarId)
+    // this.register(p.registrar, p.registrarId)
   }
   /**
    * @return String constructor name if this class is extended or provided id otherwise
@@ -33,16 +32,16 @@ export default class Action extends EventEmitter {
    * Subscribe registrar for this action
    * Anonymous registrars are allowed
    */
-  register (registrar, id = _.keys(this._registrars).length) {
+ /* register (registrar, id = _.keys(this._registrars).length) {
     if (registrar) this._registrars[id] = registrar
     return registrar
-  }
+  }*/
   /**
    * Unsubscribe registrar from this action
    * Clear all listeners if there are no registrars left
    * @param registrar
    */
-  deregister (idOrRegistrar) {
+  /*deregister (idOrRegistrar) {
     let id // eslint-disable-line no-unused-vars
     let registrar
     if (_.isString(idOrRegistrar)) id = idOrRegistrar
@@ -51,11 +50,11 @@ export default class Action extends EventEmitter {
     if (id) delete this._registrars[id]
     if (registrar) delete this._registrars[_.findKey(this._registrars, registrar)]
     if (_.isEmpty(this._registrars)) this.off()
-  }
+  }*/
   /**
    * Execute the action code
    */
-  apply (ids, ...args) {
+  /*apply (ids, ...args) {
     if (this._deny) return
     if (ids === 'all') ids = _.keys(this._registrars)
     ids = _.castArray(ids)
@@ -71,15 +70,21 @@ export default class Action extends EventEmitter {
       this.emit('fire', ...args)
       return results
     }
+  }*/
+  apply (registrar, ...args) {
+    if (this._deny) return
+    const result = this._execute(registrar, ...args)
+    this.emit('fire', ...args)
+    return result
   }
   /**
    * A simple action just calls a method of the same name as its id on registrar
    * Override in concrete action
    */
-  _execute (...args) {
+  _execute (registrar, ...args) {
     const method = this.id.charAt(0).toLowerCase() + this.id.slice(1)
-    if (_.isFunction(this._registrar[method])) {
-      return this._registrar[method].call(this._registrar, ...args)
+    if (_.isFunction(registrar[method])) {
+      return registrar[method].call(registrar, ...args)
     }
   }
   /**

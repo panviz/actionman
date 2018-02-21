@@ -1,8 +1,19 @@
-import Action from '../../src/action'
+import Action from '../../src/actions/action'
 
 export default class Rotate extends Action {
-  _execute () {
-    this._registrar.angle = this._registrar.angle ? this._registrar.angle += 10 : 10
-    this._registrar.$el.css('transform', `rotate(${this._registrar.angle}deg)`)
+  constructor () {
+    super()
+    this._angle = 10
   }
+
+  _execute (registrar, value) {
+   /* let angle = this._angle
+    if (value === 'undo') {
+      angle = -this._angle
+    }*/
+    const angle = registrar.getAngle() ? +registrar.getAngle() + 10 : 10
+    registrar.$el.css('transform', `rotate(${angle}deg)`)
+  }
+
+  undo () {}
 }

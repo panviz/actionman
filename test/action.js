@@ -1,4 +1,4 @@
-import Action from '../src/action'
+import Action from '../src/actions/action'
 
 let defaultAction
 beforeEach(() => {

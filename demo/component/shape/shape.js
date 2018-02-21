@@ -24,4 +24,13 @@ export default class Shape extends Component {
   raise (flag) {
     this.$el.toggleClass('mdc-elevation--z8')
   }
+
+  getColor () {
+    return this.$el.css('background-color')
+  }
+
+  getAngle () {
+    const transform = this.el.style.transform
+    return transform.match(/\d+/)
+  }
 }
