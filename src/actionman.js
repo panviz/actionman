@@ -2,36 +2,45 @@
  * Action Manager
  */
 import EventEmitter from 'eventemitter3'
-import Action from './actions/action'
-import ToggleAction from './actions/toggle-action'
+import Action from './action'
+import ToggleAction from './toggle-action'
 
 export default class Actionman extends EventEmitter {
   constructor (p = {}) {
     super()
     this._instances = {}
     this._registrars = {}
-    this.history = {}
+    this.history = []
     this.cursor = 0
   }
 
   get (id) {
-    return this._instances[id]
+    return this._instances[id].action
   }
 
   getAll () {
-    return this._instances.action
+    const keys = _.keys(this._instances)
+    return _.map(keys, key => this._instances[key].action)
   }
   /**
    * @return {Array} of enabled actions
    */
   getActive () {
-    return _.filter(this._instances, action => action.isEnabled())
+    const instances = _.filter(this._instances, instance => instance.action.isEnabled)
+    return _.map(instances, (instance) => {
+      if (instance.action.isEnabled) {
+        return instance.action
+      }
+    })
   }
   /**
    * An action can be created by name
    * It will be used as its id, and method of the same name will be called on each registrar
    * Each action is unique by id
+   * Subscribe registrar for this action
    * @param {Action | String} CustomAction
+   * @param {Object} registrar
+   * @param {String} registrarId
    */
   set (CustomAction, registrar, registrarId) {
     const id = _.isString(CustomAction) ? CustomAction : CustomAction.name
@@ -51,21 +60,31 @@ export default class Actionman extends EventEmitter {
   }
   /**
    * Unsubscribe registrar from action
+   * Clear all listeners if there are no registrars left
    * @param {Action | String} CustomAction class or id
-   * @param registrar
+   * @param {String | Object} idOrRegistrar
    */
-  unset (CustomAction, registrar) {
-    const id = _.isString(CustomAction) ? CustomAction : CustomAction.name
-    if (this._instances[id] && this._instances[id].registrars[registrar.id]) {
-      delete this._instances[id].registrars[registrar.id]
+  unset (CustomAction, idOrRegistrar) {
+    const actionId = _.isString(CustomAction) ? CustomAction : CustomAction.name
+    if (this._instances[actionId]) {
+      let id
+      let registrar
+      if (_.isString(idOrRegistrar)) id = idOrRegistrar
+      else registrar = idOrRegistrar
+
+      if (id) delete this._instances[actionId].registrars[id]
+      if (registrar && this._instances[actionId].registrars[registrar.id]) {
+        delete this._instances[actionId].registrars[registrar.id]
+      }
+      if (_.isEmpty(this._instances)) this.off()
     }
   }
   /**
    * Updates all actions state
    */
   update (...args) {
-    _.values(this._instances).forEach((action) => {
-      action.evaluate(...args)
+    _.values(this._instances).forEach((instance) => {
+      instance.action.evaluate(...args)
     })
   }
   /**
@@ -81,7 +100,7 @@ export default class Actionman extends EventEmitter {
         }
         this.addToHistory({ action, args })
       }
-      let [registrarsId, ...params] = args
+      let [registrarsId, ...params] = args // eslint-disable-line
       if (registrarsId === 'all') registrarsId = _.keys(this._instances[id].registrars)
       registrarsId = _.castArray(registrarsId)
       _.each(registrarsId, (registrarId) => {
@@ -102,29 +121,27 @@ export default class Actionman extends EventEmitter {
     this.emit('change:history')
   }
 
-  undo () {
-    this.cursor--
+  _apply (method) {
     const id = this.history[this.cursor].action.id
-    let [registrarsId] = this.history[this.cursor].args
-    if (registrarsId === 'all') registrarsId = _.keys(this._instances[id].registrars)
-    registrarsId = _.castArray(registrarsId)
-    _.each(registrarsId, (registrarId) => {
-      const registrar = this._instances[id].registrars[registrarId]
-      this.history[this.cursor].action.apply(registrar, 'undo')
-    })
-    this.emit('change:history')
-  }
-
-  redo () {
-    const id = this.history[this.cursor].action.id
+    const action = this.history[this.cursor].action
     let [registrarsId] = this.history[this.cursor].args
     if (registrarsId === 'all') registrarsId = _.keys(this._instances[id].registrars)
     registrarsId = _.castArray(registrarsId)
     const [, ...args] = this.history[this.cursor].args
     _.each(registrarsId, (registrarId) => {
       const registrar = this._instances[id].registrars[registrarId]
-      this.history[this.cursor].action.apply(registrar, ...args)
+      action[method].call(action, registrar, ...args)
     })
+  }
+
+  undo () {
+    this.cursor--
+    this._apply('undo')
+    this.emit('change:history')
+  }
+
+  redo () {
+    this._apply('_execute')
     this.cursor++
     this.emit('change:history')
   }

@@ -1,6 +1,6 @@
 import Shape from './shape'
 import Rotate from '../../action/rotate'
-import SetColor from '../../../src/actions/setColor'
+import SetColor from '../../action/setColor'
 
 export default class Square extends Shape {
   static get actions () {

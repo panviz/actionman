@@ -1,4 +1,4 @@
-import Action from '../src/actions/action'
+import Action from '../src/action'
 
 let defaultAction
 beforeEach(() => {
@@ -35,6 +35,9 @@ test('should trigger event on being disabled', (done) => {
 })
 
 // Execution
-test('should not execute if no one is subscribed', () => {
-  expect(defaultAction.apply()).toBe(undefined)
+test('should execute registrar action', () => {
+  const registrar = {
+    action () { return true },
+  }
+  expect(defaultAction.apply(registrar)).toBe(true)
 })

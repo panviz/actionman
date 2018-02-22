@@ -10,7 +10,6 @@ export default class Action extends EventEmitter {
   constructor (id) {
     super()
     this._id = id || this.constructor.id
-    // this.register(p.registrar, p.registrarId)
   }
   /**
    * @return String constructor name if this class is extended or provided id otherwise
@@ -28,49 +27,10 @@ export default class Action extends EventEmitter {
   get isEnabled () {
     return !this._deny
   }
-  /**
-   * Subscribe registrar for this action
-   * Anonymous registrars are allowed
-   */
- /* register (registrar, id = _.keys(this._registrars).length) {
-    if (registrar) this._registrars[id] = registrar
-    return registrar
-  }*/
-  /**
-   * Unsubscribe registrar from this action
-   * Clear all listeners if there are no registrars left
-   * @param registrar
-   */
-  /*deregister (idOrRegistrar) {
-    let id // eslint-disable-line no-unused-vars
-    let registrar
-    if (_.isString(idOrRegistrar)) id = idOrRegistrar
-    else registrar = idOrRegistrar
 
-    if (id) delete this._registrars[id]
-    if (registrar) delete this._registrars[_.findKey(this._registrars, registrar)]
-    if (_.isEmpty(this._registrars)) this.off()
-  }*/
   /**
    * Execute the action code
    */
-  /*apply (ids, ...args) {
-    if (this._deny) return
-    if (ids === 'all') ids = _.keys(this._registrars)
-    ids = _.castArray(ids)
-
-    if (this._execute && !_.isEmpty(this._registrars)) {
-      const results = _.map(ids, (id) => {
-        this._registrar = this._registrars[id]
-        if (!this._registrar) return
-        const result = this._execute(...args)
-        this._registrar = undefined
-        return result
-      })
-      this.emit('fire', ...args)
-      return results
-    }
-  }*/
   apply (registrar, ...args) {
     if (this._deny) return
     const result = this._execute(registrar, ...args)

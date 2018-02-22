@@ -1,4 +1,4 @@
-import Action from './action'
+import Action from '../../src/action'
 
 export default class SetColor extends Action {
   constructor () {
@@ -6,11 +6,6 @@ export default class SetColor extends Action {
     this.colors = {}
   }
   _execute (registrar, value) {
-    if (value === 'undo') {
-      this.undo(registrar)
-      return
-    }
-
     if (this.colors[registrar.id]) {
       this.colors[registrar.id].push(registrar.getColor())
     } else {

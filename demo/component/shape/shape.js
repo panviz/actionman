@@ -31,6 +31,10 @@ export default class Shape extends Component {
 
   getAngle () {
     const transform = this.el.style.transform
-    return transform.match(/\d+/)
+    return transform.match(/\d+/) === null ? 0 : +transform.match(/\d+/)
+  }
+
+  getRaise () {
+    return this.$el.hasClass('mdc-elevation--z8')
   }
 }
