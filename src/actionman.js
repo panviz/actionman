@@ -56,7 +56,7 @@ export default class Actionman extends EventEmitter {
       this._instances[id] = { action, registrars: { [registrarId]: registrar } }
     }
 
-    this.emit('add', this._instances[id])
+    this.emit('add', this._instances[id].action)
   }
   /**
    * Unsubscribe registrar from action
