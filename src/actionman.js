@@ -19,8 +19,7 @@ export default class Actionman extends EventEmitter {
   }
 
   getAll () {
-    const keys = _.keys(this._instances)
-    return _.map(keys, key => this._instances[key].action)
+    return this._instances
   }
   /**
    * @return {Array} of enabled actions
