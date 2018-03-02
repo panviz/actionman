@@ -5,8 +5,8 @@ export default class Log extends Component {
   constructor (...args) {
     super(...args)
 
-    _.each(this.actionman.getAll(), (action) => {
-      action.on('fire', (...actionargs) => {
+    _.each(this.actionman.getAll(), (instance) => {
+      instance.action.on('fire', (...actionargs) => {
         // eslint-disable-next-line
         console.log(action.id)
         // eslint-disable-next-line
