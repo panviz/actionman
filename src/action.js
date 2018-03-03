@@ -18,6 +18,7 @@ export default class Action extends EventEmitter {
     return this._id ? this._id : this.constructor.name
   }
   /**
+   * Is the action reversible in by design
    * @returns Boolean whether Action has overriden undo method
    */
   get canUndo () {
@@ -27,7 +28,6 @@ export default class Action extends EventEmitter {
   get isEnabled () {
     return !this._deny
   }
-
   /**
    * Execute the action code
    */
@@ -75,10 +75,12 @@ export default class Action extends EventEmitter {
   }
   /**
    * @abstract
+   * This method definition is required for canUndo
    */
   undo () {}
   /**
    * @abstract
+   * This method definition is required for canUndo
    */
   redo () {}
 }

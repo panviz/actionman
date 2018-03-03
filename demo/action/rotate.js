@@ -3,21 +3,21 @@ import Action from '../../src/action'
 export default class Rotate extends Action {
   constructor () {
     super()
-    this.angles = {}
+    this.states = {}
   }
 
   _execute (registrar, value) {
-    if (this.angles[registrar.id]) {
-      this.angles[registrar.id].push(registrar.getAngle())
-    } else {
-      this.angles[registrar.id] = [registrar.getAngle()]
-    }
-    const angle = registrar.getAngle() ? registrar.getAngle() + 10 : 10
+    const statesOfRegistrar = this.states[registrar.id]
+
+    if (statesOfRegistrar) statesOfRegistrar.push(registrar.getAngle())
+    else this.states[registrar.id] = [registrar.getAngle()]
+
+    const angle = value || registrar.getAngle() ? registrar.getAngle() + 10 : 10
     registrar.$el.css('transform', `rotate(${angle}deg)`)
   }
 
   undo (registrar) {
-    const angle = this.angles[registrar.id].pop()
+    const angle = this.states[registrar.id].pop()
     registrar.$el.css('transform', `rotate(${angle}deg)`)
   }
 }

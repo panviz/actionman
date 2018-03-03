@@ -8,8 +8,12 @@ import ToggleAction from './toggle-action'
 export default class Actionman extends EventEmitter {
   constructor (p = {}) {
     super()
+    // TODO should store action instances, not objects
     this._instances = {}
+    // TODO why not used
     this._registrars = {}
+    // array of action fire events { instance, arguments }
+    // TODO why public?
     this.history = []
     this.cursor = 0
   }
@@ -42,20 +46,20 @@ export default class Actionman extends EventEmitter {
    * @param {String} registrarId
    */
   set (CustomAction, registrar, registrarId) {
-    const id = _.isString(CustomAction) ? CustomAction : CustomAction.name
+    const actionId = _.isString(CustomAction) ? CustomAction : CustomAction.name
     let Klass
     if (_.isString(CustomAction)) {
       Klass = CustomAction.startsWith('Toggle') ? ToggleAction : Action
     } else Klass = CustomAction
 
-    if (this._instances[id]) {
-      this._instances[id].registrars[registrarId] = registrar
+    if (this._instances[actionId]) {
+      this._instances[actionId].registrars[registrarId] = registrar
     } else {
-      const action = new Klass(id)
-      this._instances[id] = { action, registrars: { [registrarId]: registrar } }
+      const action = new Klass(actionId)
+      this._instances[actionId] = { action, registrars: { [registrarId]: registrar } }
     }
 
-    this.emit('add', this._instances[id].action)
+    this.emit('add', this._instances[actionId].action)
   }
   /**
    * Unsubscribe registrar from action
@@ -90,6 +94,7 @@ export default class Actionman extends EventEmitter {
    * Fire an action based on its id
    * @param id String The id of the action
    */
+  // TODO always use dedicated argument for non-optional (registrarIds here)
   fire (id, ...args) {
     const action = this._instances[id].action
     if (!_.isNil(action) && action.isEnabled) {
@@ -99,6 +104,7 @@ export default class Actionman extends EventEmitter {
         }
         this.addToHistory({ action, args })
       }
+      // TODO rename to registrarIds
       let [registrarsId, ...params] = args // eslint-disable-line
       if (registrarsId === 'all') registrarsId = _.keys(this._instances[id].registrars)
       registrarsId = _.castArray(registrarsId)
@@ -108,13 +114,13 @@ export default class Actionman extends EventEmitter {
       })
     }
   }
-
+  // TODO why public?
   addToHistory (value) {
     this.cursor++
     this.history.push(value)
     this.emit('change:history')
   }
-
+  // TODO why public?
   updateHistory (history) {
     this.history = history
     this.emit('change:history')
@@ -132,13 +138,13 @@ export default class Actionman extends EventEmitter {
       action[method].call(action, registrar, ...args)
     })
   }
-
+  // TODO what if undo is not possible but called?
   undo () {
     this.cursor--
     this._apply('undo')
     this.emit('change:history')
   }
-
+  // TODO what if redo is not possible but called?
   redo () {
     this._apply('_execute')
     this.cursor++

@@ -8,7 +8,7 @@ export default class Log extends Component {
     _.each(this.actionman.getAll(), (instance) => {
       instance.action.on('fire', (...actionargs) => {
         // eslint-disable-next-line
-        console.log(action.id)
+        console.log(instance.action.id)
         // eslint-disable-next-line
         console.log(actionargs)
       })

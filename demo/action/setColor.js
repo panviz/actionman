@@ -3,19 +3,19 @@ import Action from '../../src/action'
 export default class SetColor extends Action {
   constructor () {
     super()
-    this.colors = {}
+    this.states = {}
   }
   _execute (registrar, value) {
-    if (this.colors[registrar.id]) {
-      this.colors[registrar.id].push(registrar.getColor())
-    } else {
-      this.colors[registrar.id] = [registrar.getColor()]
-    }
+    const statesOfRegistrar = this.states[registrar.id]
+
+    if (statesOfRegistrar) statesOfRegistrar.push(registrar.getColor())
+    else this.states[registrar.id] = [registrar.getColor()]
+
     registrar.$el.css('background-color', value)
   }
 
   undo (registrar) {
-    const color = this.colors[registrar.id].pop()
-    registrar.$el.css('background-color', color)
+    const state = this.states[registrar.id].pop()
+    registrar.$el.css('background-color', state)
   }
 }
