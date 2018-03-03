@@ -1,0 +1,21 @@
+.Log {
+  width: 360px;
+
+  ul {
+    max-height: 240px;
+    overflow: auto;
+
+    li {
+      line-height: 32px;
+      list-style-type: none;
+
+      &:nth-child(2n) {
+        background: lightblue;
+      }
+
+      &.disabled {
+        opacity: 0.3;
+      }
+    }
+  }
+}

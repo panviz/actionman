@@ -4,6 +4,7 @@ import './shape.scss'
 export default class Shape extends Component {
   constructor (...args) {
     super(...args)
+    this.$el.addClass('Shape')
     this.$el.addClass('mdc-elevation--z2')
   }
 

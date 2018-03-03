@@ -19,5 +19,6 @@ export default class Rotate extends Action {
   undo (registrar) {
     const angle = this.states[registrar.id].pop()
     registrar.$el.css('transform', `rotate(${angle}deg)`)
+    super.undo(registrar)
   }
 }

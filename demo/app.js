@@ -4,6 +4,7 @@ import Oval from './component/shape/oval'
 
 import Panel from './component/panel/panel'
 import Log from './component/log/log'
+import './app.scss'
 
 class App {
   constructor () {

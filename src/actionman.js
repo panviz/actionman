@@ -13,9 +13,12 @@ export default class Actionman extends EventEmitter {
     // TODO why not used
     this._registrars = {}
     // array of action fire events { instance, arguments }
-    // TODO why public?
-    this.history = []
-    this.cursor = 0
+    this._history = []
+    this._cursor = 0
+  }
+
+  get history () {
+    return this._history
   }
 
   get (id) {
@@ -91,16 +94,18 @@ export default class Actionman extends EventEmitter {
     })
   }
   /**
-   * Fire an action based on its id
-   * @param id String The id of the action
+   * Fire an action by id (name of the action)
+   * The action will be fired as many times as there are registrars
+   * @param { String } id The id of the action
+   * @param { Array } registarIds list of registrar ids for which action should be fired
    */
   // TODO always use dedicated argument for non-optional (registrarIds here)
   fire (id, ...args) {
     const action = this._instances[id].action
     if (!_.isNil(action) && action.isEnabled) {
       if (action.canUndo) {
-        if (this.history.length > this.cursor) { // Changes in the past change the future
-          this.updateHistory(this.history.slice(0, this.cursor))
+        if (this._history.length > this._cursor) { // Changes in the past change the future
+          this.updateHistory(this._history.slice(0, this._cursor))
         }
         this.addToHistory({ action, args })
       }
@@ -116,23 +121,23 @@ export default class Actionman extends EventEmitter {
   }
   // TODO why public?
   addToHistory (value) {
-    this.cursor++
-    this.history.push(value)
+    this._cursor++
+    this._history.push(value)
     this.emit('change:history')
   }
   // TODO why public?
   updateHistory (history) {
-    this.history = history
+    this._history = history
     this.emit('change:history')
   }
 
   _apply (method) {
-    const id = this.history[this.cursor].action.id
-    const action = this.history[this.cursor].action
-    let [registrarsId] = this.history[this.cursor].args
+    const id = this._history[this._cursor].action.id
+    const action = this._history[this._cursor].action
+    let [registrarsId] = this._history[this._cursor].args
     if (registrarsId === 'all') registrarsId = _.keys(this._instances[id].registrars)
     registrarsId = _.castArray(registrarsId)
-    const [, ...args] = this.history[this.cursor].args
+    const [, ...args] = this._history[this._cursor].args
     _.each(registrarsId, (registrarId) => {
       const registrar = this._instances[id].registrars[registrarId]
       action[method].call(action, registrar, ...args)
@@ -140,22 +145,22 @@ export default class Actionman extends EventEmitter {
   }
   // TODO what if undo is not possible but called?
   undo () {
-    this.cursor--
+    this._cursor--
     this._apply('undo')
     this.emit('change:history')
   }
   // TODO what if redo is not possible but called?
   redo () {
     this._apply('_execute')
-    this.cursor++
+    this._cursor++
     this.emit('change:history')
   }
 
   canUndo () {
-    return this.history.length > 0 && this.cursor > 0
+    return this._history.length > 0 && this._cursor > 0
   }
 
   canRedo () {
-    return this.cursor < this.history.length
+    return this._cursor < this._history.length
   }
 }

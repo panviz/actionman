@@ -17,5 +17,6 @@ export default class SetColor extends Action {
   undo (registrar) {
     const state = this.states[registrar.id].pop()
     registrar.$el.css('background-color', state)
+    super.undo(registrar)
   }
 }

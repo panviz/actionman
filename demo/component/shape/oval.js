@@ -1,5 +1,6 @@
 import Shape from './shape'
 import Rotate from '../../action/rotate'
+import './oval.scss'
 
 export default class Oval extends Shape {
   // this component doesn't listen to Ripple action

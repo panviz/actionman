@@ -31,6 +31,7 @@ export default class ToggleAction extends Action {
     const method = this._method(registrar)
     const toggle = this.toggle[registrar.id].pop()
     registrar[method].call(registrar, toggle)
+    super.undo(registrar)
   }
 
   _method (registrar) {

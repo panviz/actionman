@@ -19,8 +19,7 @@ export default class Panel extends Component {
       const data = e.currentTarget.parentElement.dataset
       if (data) {
         if (data.action === 'undo' || data.action === 'redo') {
-          this.actionman[data.action]()
-          return
+          return this.actionman[data.action]()
         }
         const ids = data.ids ? data.ids.split(' ') : 'all'
         this.actionman.fire(data.action, ids)

@@ -18,7 +18,7 @@ export default class Action extends EventEmitter {
     return this._id ? this._id : this.constructor.name
   }
   /**
-   * Is the action reversible in by design
+   * Is the action reversible by design
    * @returns Boolean whether Action has overriden undo method
    */
   get canUndo () {
@@ -34,7 +34,7 @@ export default class Action extends EventEmitter {
   apply (registrar, ...args) {
     if (this._deny) return
     const result = this._execute(registrar, ...args)
-    this.emit('fire', ...args)
+    this.emit('fire', registrar, ...args)
     return result
   }
   /**
@@ -48,6 +48,7 @@ export default class Action extends EventEmitter {
     }
   }
   /**
+   * Evalutate if the action can be executed
    * A simple action just toggles enabled state by provided flag
    * Override in concrete action
    * @param {Boolean} enable
@@ -77,10 +78,7 @@ export default class Action extends EventEmitter {
    * @abstract
    * This method definition is required for canUndo
    */
-  undo () {}
-  /**
-   * @abstract
-   * This method definition is required for canUndo
-   */
-  redo () {}
+  undo (registrar) {
+    this.emit('undo', registrar)
+  }
 }
