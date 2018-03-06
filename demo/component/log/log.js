@@ -11,9 +11,10 @@ export default class Log extends Component {
 
     // TODO consider actionman cursor
     this.actionman.on('change:history', () => {
-      const list = _.map(this.actionman.history.reverse(), record => (
-        `<li>${record.action.id}, ${record.args[0]}, ${record.args[1]}</li>`
-      ))
+      const list = _.map(this.actionman.history.reverse(), (record, i) => {
+        const klass = (this.actionman.history.length - i - 1 < this.actionman.cursor) ? '' : 'disabled'
+        return `<li class="${klass}">${record.action.id}, ${record.args[0]}, ${record.args[1]}</li>`
+      })
       this.$el.find('.list').html(list.join(''))
     })
   }

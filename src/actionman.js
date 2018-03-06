@@ -8,9 +8,7 @@ import ToggleAction from './toggle-action'
 export default class Actionman extends EventEmitter {
   constructor (p = {}) {
     super()
-    // TODO should store action instances, not objects
     this._instances = {}
-    // TODO why not used
     this._registrars = {}
     // array of action fire events { instance, arguments }
     this._history = []
@@ -18,11 +16,15 @@ export default class Actionman extends EventEmitter {
   }
 
   get history () {
-    return this._history
+    return _.cloneDeep(this._history)
+  }
+
+  get cursor () {
+    return this._cursor
   }
 
   get (id) {
-    return this._instances[id].action
+    return this._instances[id]
   }
 
   getAll () {
@@ -32,12 +34,7 @@ export default class Actionman extends EventEmitter {
    * @return {Array} of enabled actions
    */
   getActive () {
-    const instances = _.filter(this._instances, instance => instance.action.isEnabled)
-    return _.map(instances, (instance) => {
-      if (instance.action.isEnabled) {
-        return instance.action
-      }
-    })
+    return _.filter(this._instances, instance => instance.isEnabled)
   }
   /**
    * An action can be created by name
@@ -56,13 +53,14 @@ export default class Actionman extends EventEmitter {
     } else Klass = CustomAction
 
     if (this._instances[actionId]) {
-      this._instances[actionId].registrars[registrarId] = registrar
+      this._registrars[actionId][registrarId] = registrar
     } else {
       const action = new Klass(actionId)
-      this._instances[actionId] = { action, registrars: { [registrarId]: registrar } }
+      this._instances[actionId] = action
+      this._registrars[actionId] = { [registrarId]: registrar }
     }
 
-    this.emit('add', this._instances[actionId].action)
+    this.emit('add', this._instances[actionId])
   }
   /**
    * Unsubscribe registrar from action
@@ -78,9 +76,13 @@ export default class Actionman extends EventEmitter {
       if (_.isString(idOrRegistrar)) id = idOrRegistrar
       else registrar = idOrRegistrar
 
-      if (id) delete this._instances[actionId].registrars[id]
-      if (registrar && this._instances[actionId].registrars[registrar.id]) {
-        delete this._instances[actionId].registrars[registrar.id]
+      if (id) delete this._registrars[actionId][id]
+      if (registrar && this._registrars[actionId][registrar.id]) {
+        delete this._registrars[actionId][registrar.id]
+      }
+
+      if (Object.keys(this._registrars[actionId]).length === 0) {
+        delete this._instances[actionId]
       }
       if (_.isEmpty(this._instances)) this.off()
     }
@@ -90,7 +92,7 @@ export default class Actionman extends EventEmitter {
    */
   update (...args) {
     _.values(this._instances).forEach((instance) => {
-      instance.action.evaluate(...args)
+      instance.evaluate(...args)
     })
   }
   /**
@@ -101,59 +103,60 @@ export default class Actionman extends EventEmitter {
    */
   // TODO always use dedicated argument for non-optional (registrarIds here)
   fire (id, ...args) {
-    const action = this._instances[id].action
+    const action = this._instances[id]
     if (!_.isNil(action) && action.isEnabled) {
       if (action.canUndo) {
         if (this._history.length > this._cursor) { // Changes in the past change the future
-          this.updateHistory(this._history.slice(0, this._cursor))
+          this._updateHistory(this._history.slice(0, this._cursor))
         }
-        this.addToHistory({ action, args })
+        this._addToHistory({ action, args })
       }
-      // TODO rename to registrarIds
-      let [registrarsId, ...params] = args // eslint-disable-line
-      if (registrarsId === 'all') registrarsId = _.keys(this._instances[id].registrars)
-      registrarsId = _.castArray(registrarsId)
-      _.each(registrarsId, (registrarId) => {
-        const registrar = this._instances[id].registrars[registrarId]
+      let [registrarIds, ...params] = args // eslint-disable-line
+      if (registrarIds === 'all') registrarIds = _.keys(this._registrars[id])
+      registrarIds = _.castArray(registrarIds)
+      _.each(registrarIds, (registrarId) => {
+        const registrar = this._registrars[id][registrarId]
         action.apply(registrar, ...params)
       })
     }
   }
-  // TODO why public?
-  addToHistory (value) {
+
+  _addToHistory (value) {
     this._cursor++
     this._history.push(value)
-    this.emit('change:history')
+    this.emit('change:history', { add: true })
   }
-  // TODO why public?
-  updateHistory (history) {
+
+  _updateHistory (history) {
     this._history = history
-    this.emit('change:history')
+    this.emit('change:history', { update: true })
   }
 
   _apply (method) {
     const id = this._history[this._cursor].action.id
     const action = this._history[this._cursor].action
-    let [registrarsId] = this._history[this._cursor].args
-    if (registrarsId === 'all') registrarsId = _.keys(this._instances[id].registrars)
-    registrarsId = _.castArray(registrarsId)
+    let [registrarIds] = this._history[this._cursor].args
+    if (registrarIds === 'all') registrarIds = _.keys(this._registrars[id])
+    registrarIds = _.castArray(registrarIds)
     const [, ...args] = this._history[this._cursor].args
-    _.each(registrarsId, (registrarId) => {
-      const registrar = this._instances[id].registrars[registrarId]
+    _.each(registrarIds, (registrarId) => {
+      const registrar = this._registrars[id][registrarId]
       action[method].call(action, registrar, ...args)
     })
   }
-  // TODO what if undo is not possible but called?
+
   undo () {
+    if (!this.canUndo()) return
     this._cursor--
     this._apply('undo')
-    this.emit('change:history')
+    this.emit('change:history', { undo: true })
   }
-  // TODO what if redo is not possible but called?
+
   redo () {
+    if (!this.canRedo()) return
     this._apply('_execute')
     this._cursor++
-    this.emit('change:history')
+    this.emit('change:history', { redo: true })
   }
 
   canUndo () {

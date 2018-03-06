@@ -31,6 +31,10 @@ export default class Panel extends Component {
     })
     this.switch.on('change', () => {
       // this action may be fired with or without flag
+      if (this.switch.attr('programClick')) {
+        this.switch.removeAttr('programClick')
+        return
+      }
       this.actionman.fire('ToggleRaise', 'all')
     })
     $('.menu-item .toggle-enabled').on('change', (e) => {
@@ -40,6 +44,19 @@ export default class Panel extends Component {
     this.actionman.on('change:history', () => {
       this.$el.find('.undo').attr('disabled', !this.actionman.canUndo())
       this.$el.find('.redo').attr('disabled', !this.actionman.canRedo())
+    })
+
+    this.actionman.on('change:history', (arg) => {
+      let action
+      if (arg.undo) {
+        action = this.actionman.history[this.actionman.cursor].action
+      } else if (arg.redo) {
+        action = this.actionman.history[this.actionman.cursor - 1].action
+      }
+      if (action && action.id === 'ToggleRaise') {
+        this.switch.attr('programClick', true)
+        this.switch.click()
+      }
     })
   }
 }
