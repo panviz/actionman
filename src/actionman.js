@@ -30,6 +30,10 @@ export default class Actionman extends EventEmitter {
   getAll () {
     return this._instances
   }
+
+  getRegistrars (actionId) {
+    return this._registrars[actionId]
+  }
   /**
    * @return {Array} of enabled actions
    */
