@@ -3,9 +3,8 @@ import Action from './action'
 export default class ToggleAction extends Action {
   constructor (...args) {
     super(...args)
-    this.toggle = {}
+    this.states = {}
   }
-
   /**
    * Infer toggle method name from action id
    */
@@ -17,10 +16,10 @@ export default class ToggleAction extends Action {
       if (_.isBoolean(state)) toggleState = state
       else toggleState = !registrar[getMethod].call(registrar)
 
-      if (this.toggle[registrar.id]) {
-        this.toggle[registrar.id].push(registrar[getMethod].call(registrar))
+      if (this.states[registrar.id]) {
+        this.states[registrar.id].push(registrar[getMethod].call(registrar))
       } else {
-        this.toggle[registrar.id] = [registrar[getMethod].call(registrar)]
+        this.states[registrar.id] = [registrar[getMethod].call(registrar)]
       }
 
       registrar[method].call(registrar, toggleState, ...args)
@@ -29,9 +28,9 @@ export default class ToggleAction extends Action {
 
   undo (registrar) {
     const method = this._method(registrar)
-    const toggle = this.toggle[registrar.id].pop()
-    registrar[method].call(registrar, toggle)
-    super.undo(registrar)
+    const state = this.states[registrar.id].pop()
+    registrar[method].call(registrar, state)
+    super.undo(registrar, state)
   }
 
   _method (registrar) {

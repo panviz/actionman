@@ -135,7 +135,9 @@ export default class Actionman extends EventEmitter {
     this._history = history
     this.emit('change:history', { update: true })
   }
-
+  /**
+   * Execute Action's undo / redo
+   */
   _apply (method) {
     const id = this._history[this._cursor].action.id
     const action = this._history[this._cursor].action
@@ -158,7 +160,7 @@ export default class Actionman extends EventEmitter {
 
   redo () {
     if (!this.canRedo()) return
-    this._apply('_execute')
+    this._apply('apply')
     this._cursor++
     this.emit('change:history', { redo: true })
   }

@@ -23,7 +23,7 @@ export default class Shape extends Component {
   }
 
   raise (flag) {
-    this.$el.toggleClass('mdc-elevation--z8')
+    this.$el.toggleClass('mdc-elevation--z8', flag)
   }
 
   getColor () {

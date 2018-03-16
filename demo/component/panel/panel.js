@@ -29,13 +29,9 @@ export default class Panel extends Component {
     this.select.listen('MDCSelect:change', () => {
       this.actionman.fire('SetColor', 'all', this.select.value)
     })
-    this.switch.on('change', () => {
+    this.switch.on('change', (e) => {
       // this action may be fired with or without flag
-      if (this.switch.attr('programClick')) {
-        this.switch.removeAttr('programClick')
-        return
-      }
-      this.actionman.fire('ToggleRaise', 'all')
+      this.actionman.fire('ToggleRaise', 'all', e.target.checked)
     })
     $('.menu-item .toggle-enabled').on('change', (e) => {
       this.actionman.get(e.target.parentElement.dataset.action).evaluate(e.target.checked)
@@ -46,17 +42,11 @@ export default class Panel extends Component {
       this.$el.find('.redo').attr('disabled', !this.actionman.canRedo())
     })
 
-    this.actionman.on('change:history', (arg) => {
-      let action
-      if (arg.undo) {
-        action = this.actionman.history[this.actionman.cursor].action
-      } else if (arg.redo) {
-        action = this.actionman.history[this.actionman.cursor - 1].action
-      }
-      if (action && action.id === 'ToggleRaise') {
-        this.switch.attr('programClick', true)
-        this.switch.click()
-      }
-    })
+    const updateSwitch = (registrar, state) => {
+      this.switch.prop('checked', state)
+    }
+    const toggleRaise = this.actionman.get('ToggleRaise')
+    toggleRaise.on('fire', updateSwitch)
+    toggleRaise.on('undo', updateSwitch)
   }
 }

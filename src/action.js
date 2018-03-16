@@ -78,7 +78,7 @@ export default class Action extends EventEmitter {
    * @abstract
    * This method definition is required for canUndo
    */
-  undo (registrar) {
-    this.emit('undo', registrar)
+  undo (registrar, ...args) {
+    this.emit('undo', registrar, ...args)
   }
 }
