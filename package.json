@@ -1,6 +1,6 @@
 {
   "name": "@graphiy/actionman",
-  "version": "0.2.0",
+  "version": "0.2.3",
   "description": "Actions mananger",
   "keywords": [
     "actions manager",
@@ -8,7 +8,7 @@
   ],
   "homepage": "https://github.com/graphiy/actionman#readme",
   "license": "MIT",
-  "main": "build/bundle.js",
+  "main": "dist/bundle.js",
   "module": "index",
   "repository": {
     "type": "git",
@@ -51,13 +51,13 @@
     "handlebars-loader": "^1.6.0"
   },
   "devDependencies": {
-    "@material/list": "^0.36.0",
-    "@material/menu": "^0.35.0",
-    "@material/ripple": "^0.36.0",
     "@graphiy/eslint-config": "^0.1.0",
     "@graphiy/uuid62": "^0.1.0",
     "@material/animation": "^0.34.0",
     "@material/button": "^0.36.0",
+    "@material/list": "^0.36.0",
+    "@material/menu": "^0.35.0",
+    "@material/ripple": "^0.36.0",
     "@material/select": "^0.36.0",
     "@material/switch": "^0.36.0",
     "@mdi/font": "^2.4.85",
