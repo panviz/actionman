@@ -1,4 +1,5 @@
-@import '../../../node_modules/mdi/css/materialdesignicons.css';
+$mdi-font-path: '~@mdi/font/fonts/';
+@import '~@mdi/font/scss/materialdesignicons';
 @import './animation';
 
 .Shape {

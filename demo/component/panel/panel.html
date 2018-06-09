@@ -49,15 +49,14 @@
     <div class="reversibility">undoable</div>
     <input class="toggle-enabled" type="checkbox" checked/>
     <i class="mdi mdi-palette"></i>
-    <div class="mdc-select action-trigger" role="listbox" tabindex="0">
-      <span class="mdc-select__selected-text">Set color</span>
-      <div class="mdc-simple-menu mdc-select__menu">
-        <ul class="mdc-list mdc-simple-menu__items">
-          <li class="mdc-list-item" role="option" id="lightcoral">Light Coral</li>
-          <li class="mdc-list-item" role="option" id="palegreen">Pale Green</li>
-          <li class="mdc-list-item" role="option" id="LightSkyBlue">Sky Blue</li>
-        </ul>
-      </div>
+    <div class="mdc-select action-trigger">
+      <select class="mdc-select__native-control">
+        <option value="lightcoral">Light Coral</option>
+        <option value="palegreen">Pale Green</option>
+        <option value="LightSkyBlue">Sky Blue</option>
+      </select>
+      <label class="mdc-floating-label">Set Color</label>
+      <div class="mdc-line-ripple"></div>
     </div>
   </div>
   <div class="r-table-cell menu-item" data-action="Rotate">

@@ -26,7 +26,7 @@ export default class Panel extends Component {
       }
     })
 
-    this.select.listen('MDCSelect:change', () => {
+    this.select.listen('change', () => {
       this.actionman.fire('SetColor', 'all', this.select.value)
     })
     this.switch.on('change', (e) => {

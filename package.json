@@ -17,7 +17,7 @@
   "scripts": {
     "build": "webpack",
     "lint": "eslint . --ignore-path .gitignore",
-    "start": "webpack-dev-server --port 8005",
+    "start": "webpack-dev-server --config demo/webpack.config.babel.js --port 8005",
     "pretest": "yarn lint",
     "test": "jest"
   },
@@ -47,34 +47,36 @@
     }
   },
   "dependencies": {
-    "@material/ripple": "^0.24.0",
-    "eventemitter3": "^2.0.3",
+    "eventemitter3": "^3.1.0",
     "handlebars-loader": "^1.6.0"
   },
   "devDependencies": {
-    "@graphiy/eslint-config": "graphiy/eslint-config",
-    "@material/animation": "^0.4.1",
-    "@material/button": "^0.23.0",
-    "@material/select": "^0.23.0",
-    "@material/switch": "^0.1.15",
+    "@material/list": "^0.36.0",
+    "@material/menu": "^0.35.0",
+    "@material/ripple": "^0.36.0",
+    "@graphiy/eslint-config": "^0.1.0",
+    "@graphiy/uuid62": "^0.1.0",
+    "@material/animation": "^0.34.0",
+    "@material/button": "^0.36.0",
+    "@material/select": "^0.36.0",
+    "@material/switch": "^0.36.0",
+    "@mdi/font": "^2.4.85",
     "babel-cli": "^6.24.1",
     "babel-preset-env": "^1.6.0",
     "css-loader": "^0.28.4",
     "eslint": "^4.6.0",
-    "extract-text-webpack-plugin": "2.1.2",
-    "jest": "^21.2.1",
+    "jest": "^23.1.0",
     "jquery": "^3.2.1",
-    "mdi": "^2.1.19",
-    "mocha": "^3.5.0",
+    "mocha": "^5.2.0",
     "node-sass": "^4.5.3",
     "pre-commit": "^1.2.2",
     "raw-loader": "^0.5.1",
-    "sass-loader": "^6.0.6",
-    "style-loader": "^0.18.2",
-    "url-loader": "^0.6.2",
-    "uuid-base62": "graphiy/uuid62",
-    "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.7.1"
+    "sass-loader": "^7.0.3",
+    "style-loader": "^0.21.0",
+    "url-loader": "^1.0.1",
+    "webpack": "^4.12.0",
+    "webpack-cli": "^3.0.3",
+    "webpack-dev-server": "^3.1.4"
   },
   "peerDependencies": {
     "lodash": "4.x"

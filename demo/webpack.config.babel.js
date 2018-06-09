@@ -1,5 +1,4 @@
 import path from 'path'
-import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
 function absolute (...args) {
   return path.join(__dirname, ...args)
@@ -8,10 +7,7 @@ function absolute (...args) {
 const plugins = []
 const rules = [{
   test: /\.(scss|css)$/,
-  loader: ExtractTextPlugin.extract({
-    fallback: 'style-loader',
-    use: ['css-loader', 'sass-loader'],
-  }),
+  use: ['style-loader', 'css-loader', 'sass-loader'],
 }, {
   test: /\.html/,
   loader: 'handlebars-loader',
@@ -23,10 +19,9 @@ const rules = [{
   loader: 'url-loader?&name=asset/font/[name].[ext]',
 }]
 
-export default () => {
-  plugins.push(new ExtractTextPlugin('[name].css'))
-
-  return {
+export default () => (
+  {
+    mode: 'development',
     entry: {
       demo: './demo/app.js',
     },
@@ -41,4 +36,4 @@ export default () => {
     module: { rules },
     plugins,
   }
-}
+)
