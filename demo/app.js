@@ -1,3 +1,5 @@
+import _ from 'lodash'
+import $ from 'jquery'
 import Actionman from '../src/actionman'
 import Square from './component/shape/square'
 import Oval from './component/shape/oval'
@@ -5,6 +7,8 @@ import Oval from './component/shape/oval'
 import Panel from './component/panel/panel'
 import Log from './component/log/log'
 import './app.scss'
+
+window.$ = $
 
 class App {
   constructor () {

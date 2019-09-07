@@ -1,7 +1,7 @@
 {
   "name": "@graphiy/actionman",
   "version": "0.2.4",
-  "description": "Actions mananger",
+  "description": "Actions manager",
   "keywords": [
     "actions manager",
     "command pattern"
@@ -15,11 +15,14 @@
     "url": "https://github.com/Graphiy/actionman"
   },
   "scripts": {
-    "build": "webpack",
+    "build": "yarn build:lib && yarn build:demo",
+    "build:lib": "webpack --mode=production",
+    "build:demo": "cd demo/ && webpack --mode=production",
     "lint": "eslint . --ignore-path .gitignore",
-    "start": "webpack-dev-server --config demo/webpack.config.babel.js --port 8005",
+    "start": "cd demo/ && webpack-dev-server --port 8005",
     "pretest": "yarn lint",
-    "test": "jest"
+    "test": "jest",
+    "deploy": "cd demo/ && rsync -azP --delete dist/ index.html data.json daviste.com:/home/dmitra/daviste.com/static/demo/graphiy-actionman"
   },
   "babel": {
     "presets": [

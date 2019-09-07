@@ -4,7 +4,6 @@ function absolute (...args) {
   return path.join(__dirname, ...args)
 }
 
-const plugins = []
 const rules = [{
   test: /\.(scss|css)$/,
   use: ['style-loader', 'css-loader', 'sass-loader'],
@@ -19,21 +18,20 @@ const rules = [{
   loader: 'url-loader?&name=asset/font/[name].[ext]',
 }]
 
-export default () => (
-  {
-    mode: 'development',
-    entry: {
-      demo: './demo/app.js',
+export default () => ({
+  mode: 'development',
+  entry: {
+    demo: './app.js',
+  },
+  output: {
+    path: absolute('dist'),
+    filename: '[name].js',
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
     },
-    output: {
-      path: absolute('build'),
-      filename: '[name].js',
-    },
-    resolve: {
-      extensions: ['.js'],
-    },
-    devtool: 'source-map',
-    module: { rules },
-    plugins,
-  }
-)
+  },
+  module: { rules },
+  devtool: 'source-map',
+})
