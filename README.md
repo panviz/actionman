@@ -1,14 +1,13 @@
-.. image:: https://travis-ci.org/Graphiy/actionman.svg?branch=master
-    :target: https://travis-ci.org/Graphiy/actionman
-|
+[![Build Status](https://travis-ci.org/Graphiy/actionman.svg?branch=master)](https://travis-ci.org/Graphiy/actionman)
 
-Graphiy Actionman
-=================
-Arbitrary implementation of `Command design pattern <https://en.wikipedia.org/wiki/Command_pattern>_` for cross-modules communication with logging.
+# Graphiy Actionman
+
+Arbitrary implementation of [Command design pattern](https://en.wikipedia.org/wiki/Command_pattern) for cross-modules communication with logging.
 This enables undo / redo and actions log functionality.
 
-Functionality
-----
+## [Live demo](http://daviste.com/demo/graphiy-actionman)
+
+## Functionality
 + action panel button click - fire action
 + enable / disable action
 + action panel toggle button
@@ -17,19 +16,17 @@ Functionality
 + granular update (providing component ids while firing an action)
 + action log
 + undo / redo
-- ADD TO DEMO: evalutate if the action can be executed
+- ADD TO DEMO: evaluate if the action can be executed
 
-TODO
-~~~~
+### TODO
 - multiple steps undo / redo
 - queue of actions
 - Sequences of Command objects can be assembled into composite (or macro) commands.
 
-Consideration on implementation
-~~~~~~~~~
+### Consideration on implementation
 - Any action should have "id" differentiation?
   in terms of "check at a dinner" example:
-    specifying id for the action is telling the Waiter, that Customer want a specific person to cook for him, while this person may or may not be available today or even be a Cook in this restoraunt.
+    specifying id for the action is telling the Waiter, that Customer want a specific person to cook for him, while this person may or may not be available today or even be a Cook in this restaurant.
   - first param of action.apply is always ids array
   - How to fire an action for all ids?
     - pass 'all'
