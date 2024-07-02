@@ -1,18 +1,18 @@
 {
-  "name": "@graphiy/actionman",
-  "version": "0.2.4",
+  "name": "@panviz/actionman",
+  "version": "0.0.1",
   "description": "Actions manager",
   "keywords": [
     "actions manager",
     "command pattern"
   ],
-  "homepage": "https://github.com/graphiy/actionman#readme",
+  "homepage": "https://github.com/panviz/actionman#readme",
   "license": "MIT",
   "main": "dist/bundle.js",
   "module": "index",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Graphiy/actionman"
+    "url": "https://github.com/panviz/actionman"
   },
   "scripts": {
     "build": "yarn build:lib && yarn build:demo",
@@ -22,7 +22,7 @@
     "start": "cd demo/ && webpack-dev-server --port 8005",
     "pretest": "yarn lint",
     "test": "jest",
-    "deploy": "cd demo/ && rsync -azP --delete dist/ index.html data.json daviste.com:/home/dmitra/daviste.com/static/demo/graphiy-actionman"
+    "deploy": "cd demo/ && rsync -azP --delete dist/ index.html data.json daviste.com:/home/dmitra/daviste.com/static/demo/panviz-actionman"
   },
   "babel": {
     "presets": [
@@ -43,7 +43,7 @@
       "browser": true,
       "jest": true
     },
-    "extends": "@graphiy/eslint-config",
+    "extends": "@panviz/eslint-config",
     "globals": {
       "_": true,
       "$": true
@@ -54,8 +54,8 @@
     "handlebars-loader": "^1.6.0"
   },
   "devDependencies": {
-    "@graphiy/eslint-config": "^0.1.0",
-    "@graphiy/uuid62": "^0.1.0",
+    "@panviz/eslint-config": "^0.0.1",
+    "@panviz/uuid62": "^0.0.1",
     "@material/animation": "^0.34.0",
     "@material/button": "^0.36.0",
     "@material/list": "^0.36.0",

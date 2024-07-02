@@ -3,7 +3,7 @@
  * Recieves container to render to
  * Can fire events through shared instance of Actionman
  */
-import * as uuid from '@graphiy/uuid62'
+import * as uuid from '@panviz/uuid62'
 
 export default class Component {
   constructor (p = {}) {

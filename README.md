@@ -1,11 +1,11 @@
-[![Build Status](https://travis-ci.org/Graphiy/actionman.svg?branch=master)](https://travis-ci.org/Graphiy/actionman)
+[![Build Status](https://travis-ci.org/panviz/actionman.svg?branch=master)](https://travis-ci.org/panviz/actionman)
 
-# Graphiy Actionman
+# Panviz Actionman
 
 Arbitrary implementation of [Command design pattern](https://en.wikipedia.org/wiki/Command_pattern) for cross-modules communication with logging.
 This enables undo / redo and actions log functionality.
 
-## [Live demo](http://daviste.com/demo/graphiy-actionman)
+## [Live demo](http://daviste.com/demo/panviz-actionman)
 
 ## Functionality
 + action panel button click - fire action
